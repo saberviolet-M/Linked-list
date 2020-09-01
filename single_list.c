@@ -84,6 +84,7 @@ int delete_node( struct node *pH, int data)
     return -1;
 }
 
+//删除链表中所有与给定data相等的数据
 int delete1_node( struct node *pH, int data)
 {
     struct node *p = pH;
