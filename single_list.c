@@ -1,29 +1,148 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
-// å•é“¾è¡¨
-// é“¾è¡¨çš„èŠ‚ç‚¹
+// µ¥Á´±í
+// Á´±íµÄ½Úµã
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+// Ìí¼Ó½Úµã
+struct node *create_node(int data)
+{
+    struct node *p = (struct node *)malloc(sizeof(struct node));
+    if(NULL == p)
+    {
+        printf("malloc error.\n");
+    }
+    memset(p, 0, sizeof(struct node));
+    p->data = data;
+    p->next = NULL;
+}
+
+// Í·²åÈë
+void insert_head(struct node *pH, struct node *new)
+{
+    new->next = pH->next;
+    pH->next = new;
+    pH->data += 1;
+}
+
+// Î²²åÈë
+void insert_tail(struct node *pH, struct node *new)
+{
+    struct node *p = pH;
+    while (NULL != p->next)
+    {
+        p = p->next;
+    }
+    p->next = new;
+    pH->data += 1;
+}
+
+// ±éÀú½Úµã
+void traverse_node(struct node *pH)
+{
+    struct node *p = pH;
+    int cnt = 0;
+    while (NULL != p->next)
+    {
+        p = p->next;
+        cnt += 1;
+        printf("½Úµã%d,p->data = %d.\n", cnt, p->data);
+    }  
+}
 
 
-// æ·»åŠ èŠ‚ç‚¹
+// É¾³ýÓëËùÊäÈëÊýÖµ¶ÔÓ¦µÄ½Úµã,µ«ÊÇÈ±µãÊÇÈç¹ûÓÐ¶à¸öÊý¾ÝÍ¬Ê±³öÏÖÖ»ÄÜÉ¾³ýµÚÒ»¸öÕÒµ½µÄÊý¾Ý
+int delete_node( struct node *pH, int data)
+{
+    struct node *p = pH;
+    struct node *prev = NULL;
+    while (NULL != p->next)
+    {
+        prev = p;
+        p = p->next;
+        if(p->data == data)
+        {
+            if(NULL == p->next)
+            {
+                prev->next = NULL;
+            }
+            else
+            {
+                prev->next = p->next;
+            }
+            free(p);
+            pH->data -= 1;
+            return 0;
+        }
+    } 
+    printf("Ã»ÓÐÕÒµ½¶ÔÓ¦½Úµã¡£\n");
+    return -1;
+}
 
-
-// å¤´æ’å…¥
-
-
-// å°¾æ’å…¥
-
-
-// éåŽ†èŠ‚ç‚¹
-
-
-// åˆ é™¤ä¸Žæ‰€è¾“å…¥æ•°å€¼å¯¹åº”çš„èŠ‚ç‚¹,ä½†æ˜¯ç¼ºç‚¹æ˜¯å¦‚æžœæœ‰å¤šä¸ªæ•°æ®åŒæ—¶å‡ºçŽ°åªèƒ½åˆ é™¤ç¬¬ä¸€ä¸ªæ‰¾åˆ°çš„æ•°æ®
-
-
+int delete1_node( struct node *pH, int data)
+{
+    struct node *p = pH;
+    struct node *prev = NULL;
+    int state_flag = 0;
+    while (NULL != p->next)
+    {
+        prev = p;
+        p = p->next;
+        if(p->data == data)
+        {
+            state_flag = 1;
+            if(NULL == p->next)
+            {
+                prev->next = NULL;
+            }
+            else
+            {
+                prev->next = p->next;
+            }
+            free(p);
+            p = prev;
+            pH->data -= 1;
+        }
+    } 
+    if(state_flag)
+        return 0;
+    printf("Ã»ÓÐÕÒµ½¶ÔÓ¦½Úµã¡£\n");
+    return -1;
+}
 
 int main(void)
 {
+    struct node *pH = create_node(0);
+    insert_tail(pH, create_node(34));
+    insert_tail(pH, create_node(35));
+    insert_tail(pH, create_node(36));
+    printf("´æÔÚ%d¸ö½Úµã.\n", pH->data);
+    traverse_node(pH);
+    delete_node(pH, 36);
 
+    printf("´æÔÚ%d¸ö½Úµã.\n", pH->data);
+    traverse_node(pH);
+    insert_tail(pH, create_node(34));
+    insert_tail(pH, create_node(35));
+    insert_tail(pH, create_node(36));
+
+    printf("´æÔÚ%d¸ö½Úµã.\n", pH->data);
+    traverse_node(pH);
+    delete1_node(pH, 35);
+    delete1_node(pH, 34);
+    
+    printf("´æÔÚ%d¸ö½Úµã.\n", pH->data);
+    traverse_node(pH);
+
+
+/*     printf("p->data = %d.\n", pH->next->data);
+    printf("p->data = %d.\n", pH->next->next->data);
+    printf("p->data = %d.\n", pH->next->next->next->data); */
 
 
     return 0;
