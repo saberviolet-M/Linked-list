@@ -140,7 +140,6 @@ int main(void)
     printf("----------------删除后----------------\n");
     traverse_node(pH);
 
-
 /*     //手动遍历节点
     printf("pH->data = %d.\n", pH->next->data);
     printf("pH->data = %d.\n", pH->next->next->data);
